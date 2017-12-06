@@ -78,3 +78,14 @@ def build_C_x_xinput(x, x_input):
             d = np.array([distance(x[i], x_input)])
             c[i] = gamma_gaussian(0, 1478, 2.68, d)
     return c
+
+
+def add_unitary_column(X):
+    if((len(X.shape) == 1) or (X.shape[1] == 1)):
+        # check if X is a one dimensinal vector
+        X = np.append(X, [[1]])
+    else:
+        X = np.append(X, (np.ones((X.shape[0])).reshape(X.shape[0], 1)), axis=1)
+        X = np.append(X, (np.ones((X.shape[1])).reshape(1, X.shape[1])), axis=0)
+        X[-1, -1] = 0
+    return X

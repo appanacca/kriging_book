@@ -2,6 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 # import pdb as pdb
 import krig_book as kg
+import numpy.linalg as ln
 
 x1 = np.array([14.04,
                14.33,
@@ -74,11 +75,17 @@ plt.show()
 
 c_xi_xj = np.zeros((len(x1), len(x2)))
 c_xi_xj = kg.build_C_xi_xj(X)
+c_xi_xj = kg.add_unitary_column(c_xi_xj)
 print(c_xi_xj)
 
 
 c_xinput_xi = np.zeros((len(x1), 1))
-x_in = np.array([15, 18])
+x_in = np.array([13, 19])
 c_xinput_xi_xi = kg.build_C_x_xinput(X, x_in)
-
+c_xinput_xi_xi = kg.add_unitary_column(c_xinput_xi_xi)
 print(c_xinput_xi_xi)
+
+
+lam = np.dot(ln.inv(c_xi_xj), c_xinput_xi_xi)
+y_xinput = np.dot(lam[:(lam.shape[0]-1)].reshape(1, lam.shape[0]-1), y)
+print(y_xinput)
