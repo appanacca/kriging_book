@@ -117,3 +117,4 @@ def build_C_x_xinput(x, x_input):
             d = np.array([np.sqrt((x[i] - x_input[j])**2 + (x[i] - x_input[j])**2)])
             c[i, j] = gamma_gaussian(0, 1478, 2.68, d)
     return c
+

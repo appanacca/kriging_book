@@ -72,3 +72,10 @@ plt.show()
 
 c_xi_xj = np.zeros((len(x1), len(x2)))
 c_xi_xj = kg.build_C_xi_xj(x1, x2)
+
+
+c_xinput_xi = np.zeros((len(x1), len(x2)))
+x_in = np.array([15,18])
+X = np.array([x1, x2])
+print(X)
+c_xinput_xi_xi = kg.build_C_x_xinput(X, x_in)
