@@ -97,8 +97,8 @@ A, B = np.meshgrid(x1_in, x2_in)
 
 
 XX_in = np.meshgrid(x1_in, x2_in)
-XX_1 = XX_in[0].reshape(35, 1)
-XX_2 = XX_in[1].reshape(35, 1)
+XX_1 = XX_in[0].reshape(35, 1)  # clean this hardcoded dimensions
+XX_2 = XX_in[1].reshape(35, 1)  # clean this hardcoded dimensions
 
 XX_in = np.stack((XX_1, XX_2), axis=-1)
 
@@ -106,7 +106,6 @@ XX_in = np.array(XX_in).reshape(35, 2)
 
 print(XX_in)
 
-#XX_in = np.array([[13, 17]])
 y_out = kg.kriging_interp(X, y, XX_in)
 
 print(y_out)
@@ -116,11 +115,11 @@ print(y_out)
 fig2 = plt.figure()
 ax2 = fig2.add_subplot(111)
 
-CS = ax2.contourf(A, B, y_out.reshape(5, 7), 20, cmap=cm.inferno)
+CS = ax2.contourf(A, B, y_out.reshape(5, 7), 20, cmap=cm.inferno)  # clean this hardcoded dimensions
 
 CS2 = ax2.contour(CS, levels=CS.levels,
                   colors='k', alpha=0.5)
-#circle = ax2.scatter(X[:,0], X[:,1], s=20, c='blue', alpha=0.75)
+# circle = ax2.scatter(X[:,0], X[:,1], s=20, c='blue', alpha=0.75)
 fig2.colorbar(CS, shrink=0.5, aspect=5)
 
 ax2.set_xlabel(r'$x_1$')
@@ -133,7 +132,7 @@ plt.show()
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
-surf = ax.plot_surface(A, B, y_out.reshape(5, 7), cmap=cm.inferno,
+surf = ax.plot_surface(A, B, y_out.reshape(5, 7), cmap=cm.inferno,  # clean this hardcoded dimensions
                        linewidth=0, antialiased=True)
 
 ax.set_xlabel(r'$x_1$')
