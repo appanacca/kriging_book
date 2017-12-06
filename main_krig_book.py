@@ -25,6 +25,8 @@ x2 = np.array([18.76,
                18.20,
                18.15])
 
+X = np.stack((x1, x2), axis=-1)
+
 y = np.array([77.88,
               71.03,
               27.97,
@@ -46,7 +48,7 @@ plt.show()
 
 h = []
 d = []
-h, d = kg.periodgram(x1, x2)
+h, d = kg.periodgram(X, y)
 
 fig, ax = plt.subplots(dpi=250)
 plt.scatter(d, h)
@@ -71,11 +73,12 @@ ax.set_ylabel(r'$\gamma_{avg}(h)$')
 plt.show()
 
 c_xi_xj = np.zeros((len(x1), len(x2)))
-c_xi_xj = kg.build_C_xi_xj(x1, x2)
+c_xi_xj = kg.build_C_xi_xj(X)
+print(c_xi_xj)
 
 
-c_xinput_xi = np.zeros((len(x1), len(x2)))
-x_in = np.array([15,18])
-X = np.array([x1, x2])
-print(X)
+c_xinput_xi = np.zeros((len(x1), 1))
+x_in = np.array([15, 18])
 c_xinput_xi_xi = kg.build_C_x_xinput(X, x_in)
+
+print(c_xinput_xi_xi)

@@ -6,11 +6,11 @@ import pytest as pt
 # python -m pytest test_kriging_book.py
 
 
-def test_fun():
-    a = 14.04
-    b = 18.76
-    c = kg.fun(a, b)
-    assert c == 77.88
+def test_distance():
+    a = np.array([1, 0])
+    b = np.array([0, 0])
+    d = kg.distance(a, b)
+    assert d == 1
 
 
 def test_gamma_gaussian():
