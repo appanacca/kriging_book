@@ -29,3 +29,7 @@ def test_add_unitary_column_2():
     assert np.array_equal(a, np.array([[0, 0, 1],
                                        [0, 0, 1],
                                        [1, 1, 0]]))
+"""
+def test_krig():
+    kg.krigikriging_interp()
+"""

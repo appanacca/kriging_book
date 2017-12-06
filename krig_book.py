@@ -1,5 +1,6 @@
 import numpy as np
-# import pdb as pdb
+import pdb as pdb
+import numpy.linalg as ln
 
 
 def distance(a, b):
@@ -89,3 +90,24 @@ def add_unitary_column(X):
         X = np.append(X, (np.ones((X.shape[1])).reshape(1, X.shape[1])), axis=0)
         X[-1, -1] = 0
     return X
+
+
+def kriging_interp(X, y, Xin):
+    """
+    X: NxK matrix that contains the input of the experiment
+    y: Nx1 matrix with the experiment output
+    Xin: matrix MxK (M can be a user choice) with the new point of the experiment
+    """
+    y_xinput = np.zeros(Xin.shape[0])
+    for i in np.arange(Xin.shape[0]):
+        c_xi_xj = build_C_xi_xj(X)
+        c_xi_xj = add_unitary_column(c_xi_xj)
+
+        c_xinput_xi_xi = build_C_x_xinput(X, Xin[i])
+        c_xinput_xi_xi = add_unitary_column(c_xinput_xi_xi)
+
+        lam = np.dot(ln.inv(c_xi_xj), c_xinput_xi_xi)
+        y_xinput[i] = np.dot(lam[:(lam.shape[0]-1)].reshape(1, lam.shape[0]-1), y)
+        #pdb.set_trace()
+
+    return y_xinput
