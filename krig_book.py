@@ -57,7 +57,7 @@ def build_C_xi_xj(X):
     for i in np.arange(len(X[:, 0])):
         for j in np.arange(len(X[:, 0])):
             d = np.array([distance(X[i], X[j])])
-            c[i, j] = gamma_gaussian(0, 1478, 2.68, d)
+            c[i, j] = gamma_gaussian(0, 1478, 0.19, d)
     return c
 
 
@@ -77,7 +77,7 @@ def build_C_x_xinput(x, x_input):
     #    the upper triangular part
     for i in np.arange(len(x[:, 0])):
             d = np.array([distance(x[i], x_input)])
-            c[i] = gamma_gaussian(0, 1478, 2.68, d)
+            c[i] = gamma_gaussian(0, 1478, 0.19, d)
     return c
 
 
@@ -108,6 +108,7 @@ def kriging_interp(X, y, Xin):
 
         lam = np.dot(ln.inv(c_xi_xj), c_xinput_xi_xi)
         y_xinput[i] = np.dot(lam[:(lam.shape[0]-1)].reshape(1, lam.shape[0]-1), y)
+
         #pdb.set_trace()
 
     return y_xinput

@@ -78,48 +78,47 @@ plt.show()
 
 c_xi_xj = kg.build_C_xi_xj(X)
 c_xi_xj = kg.add_unitary_column(c_xi_xj)
-print(c_xi_xj)
 
 
 x_in = np.array([13, 19])
 c_xinput_xi_xi = kg.build_C_x_xinput(X, x_in)
 c_xinput_xi_xi = kg.add_unitary_column(c_xinput_xi_xi)
-print(c_xinput_xi_xi)
 
 
 lam = np.dot(ln.inv(c_xi_xj), c_xinput_xi_xi)
 y_xinput = np.dot(lam[:(lam.shape[0]-1)].reshape(1, lam.shape[0]-1), y)
-print(y_xinput)
 
-x1_in = np.arange(13, 16.5, 0.5)
-x2_in = np.arange(17, 19.5, 0.5)
+x1_in = np.arange(13, 16.5, 0.05)
+x2_in = np.arange(17, 19.5, 0.05)
 A, B = np.meshgrid(x1_in, x2_in)
 
 
 XX_in = np.meshgrid(x1_in, x2_in)
-XX_1 = XX_in[0].reshape(35, 1)  # clean this hardcoded dimensions
-XX_2 = XX_in[1].reshape(35, 1)  # clean this hardcoded dimensions
+n = len(x1_in)
+m = len(x2_in)
+nm = n*m
+
+XX_1 = XX_in[0].reshape(nm, 1) 
+XX_2 = XX_in[1].reshape(nm, 1)
 
 XX_in = np.stack((XX_1, XX_2), axis=-1)
 
-XX_in = np.array(XX_in).reshape(35, 2)
+XX_in = np.array(XX_in).reshape(nm, 2)
 
-print(XX_in)
 
 y_out = kg.kriging_interp(X, y, XX_in)
 
-print(y_out)
 
 
 
 fig2 = plt.figure()
 ax2 = fig2.add_subplot(111)
 
-CS = ax2.contourf(A, B, y_out.reshape(5, 7), 20, cmap=cm.inferno)  # clean this hardcoded dimensions
+CS = ax2.contourf(A, B, y_out.reshape(m, n), 20, cmap=cm.inferno)  # clean this hardcoded dimensions
 
 CS2 = ax2.contour(CS, levels=CS.levels,
                   colors='k', alpha=0.5)
-# circle = ax2.scatter(X[:,0], X[:,1], s=20, c='blue', alpha=0.75)
+circle = ax2.scatter(A, B, s=20, c='blue', alpha=0.75)
 fig2.colorbar(CS, shrink=0.5, aspect=5)
 
 ax2.set_xlabel(r'$x_1$')
@@ -132,9 +131,9 @@ plt.show()
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 
-surf = ax.plot_surface(A, B, y_out.reshape(5, 7), cmap=cm.inferno,  # clean this hardcoded dimensions
+surf = ax.plot_surface(A, B, y_out.reshape(m, n), cmap=cm.inferno,
                        linewidth=0, antialiased=True)
-
+circle = ax.scatter(A, B, y_out.reshape(m, n), s=20, c='blue', alpha=0.75)
 ax.set_xlabel(r'$x_1$')
 ax.set_ylabel(r'$x_2$')
 
@@ -143,3 +142,5 @@ fig.colorbar(surf, shrink=0.5, aspect=5)
 
 plt.savefig('kriging_3D.pdf')
 plt.show()
+
+print(np.mean(y))
