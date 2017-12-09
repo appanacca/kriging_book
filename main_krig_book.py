@@ -7,6 +7,13 @@ import numpy.linalg as ln
 from mpl_toolkits.mplot3d import Axes3D
 from matplotlib import cm
 
+from matplotlib import rc
+rc('font', **{'family': 'sans-serif', 'sans-serif': ['Helvetica']})
+# for Palatino and other serif fonts use:
+# rc('font',**{'family':'serif','serif':['Palatino']})
+rc('text', usetex=True)
+
+
 x1 = np.array([14.04,
                14.33,
                15.39,
@@ -47,6 +54,7 @@ plt.scatter(x1, x2, c=y)
 ax.set_xlabel(r'$x_1$')
 ax.set_ylabel(r'$x_2$')
 plt.colorbar()
+plt.savefig('DOE_data.pdf', bbox_inches='tight')
 plt.show()
 
 
@@ -58,6 +66,7 @@ fig, ax = plt.subplots(dpi=250)
 plt.scatter(d, h)
 ax.set_xlabel(r'$h$')
 ax.set_ylabel(r'$\gamma(h)$')
+plt.savefig('semivariogram.pdf', bbox_inches='tight')
 plt.show()
 
 
@@ -74,6 +83,7 @@ plt.scatter(d_avg, h_avg)
 plt.plot(dist, gg, 'r')
 ax.set_xlabel(r'$h$')
 ax.set_ylabel(r'$\gamma_{avg}(h)$')
+plt.savefig('semivariogram_avg.pdf', bbox_inches='tight')
 plt.show()
 
 c_xi_xj = kg.build_C_xi_xj(X)
@@ -109,8 +119,6 @@ XX_in = np.array(XX_in).reshape(nm, 2)
 y_out = kg.kriging_interp(X, y, XX_in)
 
 
-
-
 fig2 = plt.figure()
 ax2 = fig2.add_subplot(111)
 
@@ -118,13 +126,14 @@ CS = ax2.contourf(A, B, y_out.reshape(m, n), 20, cmap=cm.inferno)  # clean this 
 
 CS2 = ax2.contour(CS, levels=CS.levels,
                   colors='k', alpha=0.5)
-circle = ax2.scatter(A, B, s=20, c='blue', alpha=0.75)
+
+circle = ax2.scatter(x1, x2, s=20, c='blue', alpha=0.75)
 fig2.colorbar(CS, shrink=0.5, aspect=5)
 
 ax2.set_xlabel(r'$x_1$')
 ax2.set_ylabel(r'$x_2$')
 
-plt.savefig('kriging.pdf')
+plt.savefig('kriging.pdf', bbox_inches='tight')
 plt.show()
 
 
@@ -133,14 +142,14 @@ ax = fig.add_subplot(111, projection='3d')
 
 surf = ax.plot_surface(A, B, y_out.reshape(m, n), cmap=cm.inferno,
                        linewidth=0, antialiased=True)
-circle = ax.scatter(A, B, y_out.reshape(m, n), s=20, c='blue', alpha=0.75)
+circle = ax.scatter(x1, x2, y, s=20, c='blue', alpha=0.75)
 ax.set_xlabel(r'$x_1$')
 ax.set_ylabel(r'$x_2$')
 
-ax.set_zlabel(r'$Kriging$')
+ax.set_zlabel(r'$\hat{y}$')
 fig.colorbar(surf, shrink=0.5, aspect=5)
 
-plt.savefig('kriging_3D.pdf')
+plt.savefig('kriging_3D.pdf', bbox_inches='tight')
 plt.show()
 
 print(np.mean(y))
