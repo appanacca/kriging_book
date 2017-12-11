@@ -69,15 +69,15 @@ z = ot.Sample(np.reshape(z, (len(z), 1)))
 
 dimension = len(x[0])
 
-basis = ot.ConstantBasisFactory(dimension).build()
+#basis = ot.ConstantBasisFactory(dimension).build()
 # basis = ot.LinearBasisFactory(dimension).build()
-# basis = ot.QuadraticBasisFactory(dimension).build()
+basis = ot.QuadraticBasisFactory(dimension).build()
 
-covarianceModel = ot.SquaredExponential([38.44], [1.895])
-# covarianceModel = ot.MaternModel()
+# covarianceModel = ot.SquaredExponential([38.44], [1.895])
+covarianceModel = ot.MaternModel()  #[38.44], [1.895])
 
 algo = ot.KrigingAlgorithm(X, z, covarianceModel, basis)
-# algo.setNoise([0.1]*len(z)) # nugget
+#algo.setNoise([0.7]*len(z)) # nugget
 algo.run()
 
 
@@ -118,5 +118,5 @@ ax2.scatter(X[:, 0], X[:, 1], z, s=40, c='blue', alpha=1)
 # fig.colorbar(surf, shrink=0.5, aspect=5)
 plt.subplots_adjust(wspace=0.17, hspace=0)
 
-plt.savefig('kriging_openturns.pdf', bbox_inches='tight', dpi=500)
+plt.savefig('kriging_openturns2.pdf', bbox_inches='tight', dpi=500)
 plt.show()

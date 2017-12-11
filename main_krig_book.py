@@ -13,6 +13,20 @@ rc('font', **{'family': 'sans-serif', 'sans-serif': ['Helvetica']})
 # rc('font',**{'family':'serif','serif':['Palatino']})
 rc('text', usetex=True)
 
+font = {'family': 'normal',
+        'weight': 'normal',
+        'size': 20,
+        }
+
+rc('font', **font)
+
+
+font1 = {'family': 'serif',
+         'color':  'black',
+         'weight': 'normal',
+         'size': 24,
+         }
+
 
 x1 = np.array([14.04,
                14.33,
@@ -51,23 +65,16 @@ y = np.array([77.88,
 
 fig, ax = plt.subplots(dpi=250)
 plt.scatter(x1, x2, c=y)
-ax.set_xlabel(r'$x_1$')
-ax.set_ylabel(r'$x_2$')
+ax.set_xlabel(r'$x_1$', fontdict=font1)
+ax.set_ylabel(r'$x_2$', fontdict=font1)
 plt.colorbar()
-plt.savefig('DOE_data.pdf', bbox_inches='tight')
+plt.savefig('DOE_data.pdf', bbox_inches='tight', dpi=500)
 plt.show()
 
 
 h = []
 d = []
 h, d = kg.periodgram(X, y)
-
-fig, ax = plt.subplots(dpi=250)
-plt.scatter(d, h)
-ax.set_xlabel(r'$h$')
-ax.set_ylabel(r'$\gamma(h)$')
-plt.savefig('semivariogram.pdf', bbox_inches='tight')
-plt.show()
 
 
 h_avg = []
@@ -78,12 +85,17 @@ dist = np.arange(0, 2.75, 0.01)
 gg = kg.gamma_gaussian(0, 1478, 2.68, dist)
 
 
-fig, ax = plt.subplots(dpi=250)
-plt.scatter(d_avg, h_avg)
-plt.plot(dist, gg, 'r')
-ax.set_xlabel(r'$h$')
-ax.set_ylabel(r'$\gamma_{avg}(h)$')
-plt.savefig('semivariogram_avg.pdf', bbox_inches='tight')
+fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 6), dpi=250, facecolor='w', edgecolor='k')
+ax1.scatter(d, h)
+ax1.set_xlabel(r'$h$', fontdict=font1)
+ax1.set_ylabel(r'$\gamma(h)$', fontdict=font1)
+#plt.savefig('semivariogram.pdf', bbox_inches='tight')
+
+ax2.scatter(d_avg, h_avg)
+ax2.plot(dist, gg, 'r')
+ax2.set_xlabel(r'$h$', fontdict=font1)
+ax2.set_ylabel(r'$\gamma_{avg}(h)$', fontdict=font1)
+plt.savefig('sem.pdf', bbox_inches='tight')
 plt.show()
 
 c_xi_xj = kg.build_C_xi_xj(X)
@@ -130,8 +142,8 @@ CS2 = ax2.contour(CS, levels=CS.levels,
 circle = ax2.scatter(x1, x2, s=20, c='blue', alpha=0.75)
 fig2.colorbar(CS, shrink=0.5, aspect=5)
 
-ax2.set_xlabel(r'$x_1$')
-ax2.set_ylabel(r'$x_2$')
+ax2.set_xlabel(r'$x_1$', fontdict=font1)
+ax2.set_ylabel(r'$x_2$', fontdict=font1)
 
 plt.savefig('kriging.pdf', bbox_inches='tight')
 plt.show()
@@ -143,10 +155,10 @@ ax = fig.add_subplot(111, projection='3d')
 surf = ax.plot_surface(A, B, y_out.reshape(m, n), cmap=cm.inferno,
                        linewidth=0, antialiased=True)
 circle = ax.scatter(x1, x2, y, s=20, c='blue', alpha=0.75)
-ax.set_xlabel(r'$x_1$')
-ax.set_ylabel(r'$x_2$')
+ax.set_xlabel(r'$x_1$', fontdict=font1)
+ax.set_ylabel(r'$x_2$', fontdict=font1)
 
-ax.set_zlabel(r'$\hat{y}$')
+ax.set_zlabel(r'$\hat{y}$', fontdict=font1)
 fig.colorbar(surf, shrink=0.5, aspect=5)
 
 plt.savefig('kriging_3D.pdf', bbox_inches='tight')
